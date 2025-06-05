@@ -325,7 +325,11 @@ int main()
             printf("reg%d:\t\t0x%08x\n", regPrint, reg[regPrint]);
         }
         for (int impressao = 0; impressao < 154; impressao++) {
-            printf("%d:\t\t0x%02x\n", impressao, memoria[impressao]);
+            printf("%3d: 0x%02x\t", impressao, memoria[impressao]);
+            
+            if ((impressao + 1) % 10 == 0) {
+                printf("\n");
+            }
         }
         printf("\nPressione ENTER para continuar a execucao do programa.\n");
        while (getchar() != '\n');
