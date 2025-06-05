@@ -77,15 +77,13 @@ int main()
     memoria[24] = 0x00;
     memoria[25] = 0x8e;
     memoria[26] = 0x00;
-    memoria[145] = 0x20;
+    memoria[144] = 0x20;
     memoria[146] = 0x00;
-    memoria[147] = 0x03;
+    memoria[146] = 0x03;
     memoria[148] = 0x00;
-    memoria[149] = 0x04;
+    memoria[148] = 0x05;
     memoria[150] = 0x00;
-    memoria[151] = 0x05;
-    memoria[152] = 0x00;
-    memoria[153] = 0x03;
+    memoria[152] = 0x03;
 
     while (PC <= 154) {
         // Busca
@@ -124,6 +122,7 @@ int main()
         if (IR == ld || IR == st || IR == movi || IR == addi || IR == subi || IR == muli || IR == divi || IR == lsh || IR == rsh) {
             ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
             MAR = MBR >> 16;
+            printf("Ro0: %x\n", ro0);
         }
 
         // Execucao
@@ -295,7 +294,7 @@ int main()
                 break;
 
             case divi :
-                reg[ro0] =reg[ro0] / IMM;
+                reg[ro0] = reg[ro0] / IMM;
                 PC = PC + 3;
                 break;
 
