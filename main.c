@@ -312,17 +312,17 @@ int main()
 
         // Dados na tela
         printf("CPU:\n MBR: %08X\n", MBR);
-        printf("MAR: 0x%08X\n", MAR);
+        printf("MAR: 0x%04x\n", MAR);
         printf("IR: 0x%02X\n", IR);
-        printf("ro0: 0x%02X\n", ro0);
-        printf("ro1: 0x%02X\n", ro1);
-        printf("IMM: 0x%08X\n", IMM);
-        printf("PC: 0x%08X\n", PC);
+        printf("ro0: 0x%01X\n", ro0);
+        printf("ro1: 0x%01X\n", ro1);
+        printf("IMM: 0x%04X\n", IMM);
+        printf("PC: 0x%04X\n", PC);
         printf("E: 0x%X\n", E);
         printf("L: 0x%X\n", L);
         printf("G: 0x%X\n", G);
         for (int regPrint = 0; regPrint < 4; regPrint++) {
-            printf("reg%d:\t\t0x%08x\n", regPrint, reg[regPrint]);
+            printf("reg%d:\t\t0x%04x\n", regPrint, reg[regPrint]);
         }
         for (int impressao = 0; impressao < 154; impressao++) {
             printf("%3d: 0x%02x\t", impressao, memoria[impressao]);
