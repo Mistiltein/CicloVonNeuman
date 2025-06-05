@@ -87,7 +87,7 @@ int main()
     memoria[152] = 0x00;
     memoria[153] = 0x03;
 
-    while (IR != hlt && PC < 154) {
+    while (PC <= 154) {
         // Busca
         MAR = PC;
 
@@ -328,7 +328,7 @@ int main()
             printf("%d:\t\t0x%02x\n", impressao, memoria[impressao]);
         }
         printf("\nPressione ENTER para continuar a execucao do programa.\n");
-        while (getchar() != '\n');
+       while (getchar() != '\n');
     }
 
     return 0;
