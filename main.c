@@ -77,15 +77,13 @@ int main()
     memoria[24] = 0x00;
     memoria[25] = 0x8e;
     memoria[26] = 0x00;
-    memoria[145] = 0x20;
+    memoria[144] = 0x20;
     memoria[146] = 0x00;
-    memoria[147] = 0x03;
+    memoria[146] = 0x03;
     memoria[148] = 0x00;
-    memoria[149] = 0x04;
+    memoria[148] = 0x05;
     memoria[150] = 0x00;
-    memoria[151] = 0x05;
-    memoria[152] = 0x00;
-    memoria[153] = 0x03;
+    memoria[152] = 0x03;
 
     while (PC <= 154) {
         // Busca
@@ -124,6 +122,7 @@ int main()
         if (IR == ld || IR == st || IR == movi || IR == addi || IR == subi || IR == muli || IR == divi || IR == lsh || IR == rsh) {
             ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
             MAR = MBR >> 16;
+            printf("Ro0: %x\n", ro0);
         }
 
         // Execucao
@@ -266,6 +265,7 @@ int main()
 
             case ld :
                 reg[ro0] = memoria[MAR] << 8;
+                reg[ro0] = reg[ro0] >> 8;
                 PC = PC + 3;
                 break;
 
@@ -295,7 +295,7 @@ int main()
                 break;
 
             case divi :
-                reg[ro0] =reg[ro0] / IMM;
+                reg[ro0] = reg[ro0] / IMM;
                 PC = PC + 3;
                 break;
 
@@ -312,17 +312,17 @@ int main()
 
         // Dados na tela
         printf("CPU:\n MBR: %08X\n", MBR);
-        printf("MAR: 0x%08X\n", MAR);
+        printf("MAR: 0x%04x\n", MAR);
         printf("IR: 0x%02X\n", IR);
-        printf("ro0: 0x%02X\n", ro0);
-        printf("ro1: 0x%02X\n", ro1);
-        printf("IMM: 0x%08X\n", IMM);
-        printf("PC: 0x%08X\n", PC);
+        printf("ro0: 0x%01X\n", ro0);
+        printf("ro1: 0x%01X\n", ro1);
+        printf("IMM: 0x%04X\n", IMM);
+        printf("PC: 0x%04X\n", PC);
         printf("E: 0x%X\n", E);
         printf("L: 0x%X\n", L);
         printf("G: 0x%X\n", G);
         for (int regPrint = 0; regPrint < 4; regPrint++) {
-            printf("reg%d:\t\t0x%08x\n", regPrint, reg[regPrint]);
+            printf("reg%d:\t\t0x%04x\n", regPrint, reg[regPrint]);
         }
         for (int impressao = 0; impressao < 154; impressao++) {
             printf("%3d: 0x%02x\t", impressao, memoria[impressao]);
