@@ -133,37 +133,37 @@ int main()
                 break;
 
             case nop :
-                PC = PC + 3;
+                PC = PC + 1;
                 break;
 
             case ldr :
                 reg[ro0] = reg[ro1];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case str :
                 reg[ro1] = reg[ro0];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case add :
                 reg[ro0] = reg[ro0] + reg[ro1];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case sub :
                 reg[ro0] = reg[ro0] - reg[ro1];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case mul :
                 reg[ro0] = reg[ro0] * reg[ro1];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case div :
                 reg[ro0] = reg[ro0] / reg[ro1];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case cmp :
@@ -184,32 +184,32 @@ int main()
                 } else {
                     G = 0;
                 }
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case movr :
                 reg[ro0] = reg[ro1];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case and :
                 reg[ro0] = reg[ro0] & reg[ro1];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case or :
                 reg[ro0] = reg[ro0] | reg[ro1];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case xor :
                 reg[ro0] = reg[ro0] ^ reg[ro1];
-                PC = PC + 3;
+                PC = PC + 2;
                 break;
 
             case not :
                 reg[ro0] = !reg[ro0];
-                PC = PC + 3;
+                PC = PC + 1;
                 break;
 
             case je :
@@ -325,7 +325,11 @@ int main()
             printf("reg%d:\t\t0x%08x\n", regPrint, reg[regPrint]);
         }
         for (int impressao = 0; impressao < 154; impressao++) {
-            printf("%d:\t\t0x%02x\n", impressao, memoria[impressao]);
+            printf("%3d: 0x%02x\t", impressao, memoria[impressao]);
+            
+            if ((impressao + 1) % 10 == 0) {
+                printf("\n");
+            }
         }
         printf("\nPressione ENTER para continuar a execucao do programa.\n");
        while (getchar() != '\n');
