@@ -265,6 +265,7 @@ int main()
 
             case ld :
                 reg[ro0] = memoria[MAR] << 8;
+                reg[ro0] = reg[ro0] >> 8;
                 PC = PC + 3;
                 break;
 
