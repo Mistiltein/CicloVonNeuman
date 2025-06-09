@@ -283,7 +283,11 @@ int main()
                 break;
 
             case st :
-                memoria[MAR] = reg[ro0] >> 8;
+                MBR = reg[ro0];
+                // printf("MBR RECEBENDO O VALOR DO ACUMULADOR: %x\n", MBR);
+                memoria[MAR] = MBR;
+                // printf("INDICE DA MEMORIA: %x\n", MAR);
+                // printf("MEMORIA COM O VALOR ARMAZENADO: %x\n", memoria[MAR]);
                 PC = PC + 3;
                 break;
 
