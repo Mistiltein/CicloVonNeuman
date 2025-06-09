@@ -134,7 +134,7 @@ int main()
 
         if (IR == ld || IR == st || IR == movi || IR == addi || IR == subi || IR == muli || IR == divi || IR == lsh || IR == rsh) {
             ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
-            MAR = MBR >> 16;
+            MAR = (MBR & 0x0000ff);
             // printf("ro0: %X\n", ro0);
             // printf("MAR: %X\n", MAR);
         }
@@ -278,8 +278,7 @@ int main()
                 break;
 
             case ld :
-                reg[ro0] = memoria[MAR] << 8;
-                reg[ro0] = reg[ro0] >> 8;
+                reg[ro0] = memoria[MAR];
                 PC = PC + 3;
                 break;
 
@@ -324,7 +323,6 @@ int main()
                 break;
         }
 
-        /*
         // Dados na tela
         printf("CPU:\n MBR: %08X\n", MBR);
         printf("MAR: 0x%04x\n", MAR);
@@ -339,6 +337,7 @@ int main()
         for (int regPrint = 0; regPrint < 4; regPrint++) {
             printf("reg%d:\t\t0x%04x\n", regPrint, reg[regPrint]);
         }
+
         for (int impressao = 0; impressao < 154; impressao++) {
             printf("%3d: 0x%02x\t", impressao, memoria[impressao]);
 
@@ -347,7 +346,6 @@ int main()
             }
         }
 
-        */
         printf("\nPressione ENTER para continuar a execucao do programa.\n");
        while (getchar() != '\n');
     }
