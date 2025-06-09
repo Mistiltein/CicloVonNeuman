@@ -455,7 +455,6 @@ int main()
 
         printf("\nPressione ENTER para continuar a execucao do programa.\n");
        while (getchar() != '\n');
-    //   system("cls || clear");
     }
 
     return 0;
