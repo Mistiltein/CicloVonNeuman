@@ -3,36 +3,36 @@
 #include <string.h>
 
 // Instrucao traduzida para o Opcode
-#define hlt 0b00000
-#define nop 0b00001
-#define ldr 0b10101
-#define str 0b10110
-#define add 0b00010
-#define sub 0b00011
-#define mul 0b00100
-#define div 0b00101
-#define cmp 0b00110
-#define movr 0b00111
-#define and 0b01000
-#define or 0b01001
-#define xor 0b01010
-#define not 0b01011
-#define je 0b01100
-#define jne 0b01101
-#define jl 0b01110
-#define jle 0b01111
-#define jg 0b10000
-#define jge 0b10001
-#define jmp 0b10010
-#define ld 0b10011
-#define st 0b10100
-#define movi 0b10111
-#define addi 0b11000
-#define subi 0b11001
-#define muli 0b11010
-#define divi 0b11011
-#define lsh 0b11100
-#define rsh 0b11101
+#define hlt   0b00000
+#define nop   0b00001
+#define ldr   0b00010
+#define str   0b00011
+#define add   0b00100
+#define sub   0b00101
+#define mul   0b00110
+#define div   0b00111
+#define cmp   0b01000
+#define movr  0b01001
+#define and   0b01010
+#define or    0b01011
+#define xor   0b01100
+#define not   0b01101
+#define je    0b01110
+#define jne   0b01111
+#define jl    0b10000
+#define jle   0b10001
+#define jg    0b10010
+#define jge   0b10011
+#define jmp   0b10100
+#define ld    0b10101
+#define st    0b10110
+#define movi  0b10111
+#define addi  0b11000
+#define subi  0b11001
+#define muli  0b11010
+#define divi  0b11011
+#define lsh   0b11100
+#define rsh   0b11101
 
 int main()
 {
@@ -50,79 +50,93 @@ int main()
     unsigned char G = 0;
     unsigned short int reg[4] = {0};
 
-    memoria[0] = 0x98;
+    memoria[0] = 0xa8;
     memoria[1] = 0x00;
     memoria[2] = 0x96;
-    memoria[3] = 0x9a;
+
+    memoria[3] = 0xaa;
     memoria[4] = 0x00;
     memoria[5] = 0x98;
-    memoria[6] = 0x18;
+
+    memoria[6] = 0x28;
     memoria[7] = 0x80;
-    memoria[8] = 0x9a;
+
+    memoria[8] = 0xaa;
     memoria[9] = 0x00;
     memoria[10] = 0x94;
-    memoria[11] = 0x2a;
+
+    memoria[11] = 0x3a;
     memoria[12] = 0x00;
-    memoria[13] = 0x9c;
+    memoria[13] = 0xac;
     memoria[14] = 0x00;
     memoria[15] = 0x92;
-    memoria[16] = 0x24;
+    memoria[16] = 0x34;
     memoria[17] = 0x80;
-    memoria[18] = 0x9a;
+    memoria[18] = 0xaa;
     memoria[19] = 0x00;
     memoria[20] = 0x90;
-    memoria[21] = 0x13;
+    memoria[21] = 0x23;
     memoria[22] = 0x00;
-    memoria[23] = 0xa2;
+    memoria[23] = 0xb2;
     memoria[24] = 0x00;
     memoria[25] = 0x8e;
-    memoria[26] = 0x00;
     memoria[144] = 0x20;
-    memoria[146] = 0x00;
+    memoria[145] = 0x00;
     memoria[146] = 0x03;
-    memoria[148] = 0x00;
-    memoria[148] = 0x05;
-    memoria[150] = 0x00;
+    memoria[147] = 0x00;
+    memoria[148] = 0x04;
+    memoria[149] = 0x00;
+    memoria[150] = 0x05;
+    memoria[151] = 0x00;
     memoria[152] = 0x03;
+    memoria[153] = 0x00;
 
     while (PC <= 154) {
         // Busca
         MAR = PC;
 
-        MBR = (MBR | memoria[MAR++]) << 8;
-        // printf("%x\n", MBR);
-        MBR = (MBR | memoria[MAR++]) << 8;
-        // printf("%x\n", MBR);
-        MBR = MBR | memoria[MAR++];
-        // printf("%x\n", MBR);
+        MBR = memoria[MAR] << 8;
+        MAR++;
+        //printf("MBR APOS PRIMEIRO DESLOCAMENTO: %08x\n", MBR);
+        MBR = (MBR | memoria[MAR]) << 8;
+        MAR++;
+        //printf("MBR APOS SEGUNDO DESLOCAMENTO: %08x\n", MBR);
+        MBR = (MBR | memoria[MAR]);
+        //printf("MBR APOS TERCEIRO DESLOCAMENTO: %08x\n", MBR);
 
         // Decodificacao
         IR = MBR >> 19;
-        printf("MBR: %x\n", MBR);
-        printf("IR: %x\n", IR);
+        printf("MBR: %X\n", MBR);
+        printf("IR: %X\n", IR);
 
         if (IR == hlt || IR == nop) {
             ro0 = MBR >> 16;
+            printf("ro0: %x\n", ro0);
         }
 
         if (IR == ldr || IR == str || IR == add || IR == sub || IR == mul || IR == div || IR == cmp || IR == movr || IR == and || IR == or || IR == xor) {
             ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
             ro1 = (MBR & 0x018000) >> 15; // 0000 0001 1000 0000 0000 0000
-            printf("Ro0: %x\n", ro0);
+            // printf("ro0: %X\n", ro0);
+            // printf("ro1: %X\n", ro1);
         }
 
         if (IR == not) {
             ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
+            // printf("ro0: %X\n", ro0);
+            // printf("ro1: %X\n", ro1);
         }
 
         if (IR == je || IR == jne || IR == jl || IR == jle || IR == jg || IR == jge || IR == jmp) {
             MAR = MBR >> 16;
+            // printf("MAR: %X\n", MAR);
         }
 
         if (IR == ld || IR == st || IR == movi || IR == addi || IR == subi || IR == muli || IR == divi || IR == lsh || IR == rsh) {
             ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
             MAR = MBR >> 16;
-            printf("Ro0: %x\n", ro0);
+            // printf("ro0: %X\n", ro0);
+            // printf("MAR: %X\n", MAR);
         }
 
         // Execucao
@@ -310,6 +324,7 @@ int main()
                 break;
         }
 
+        /*
         // Dados na tela
         printf("CPU:\n MBR: %08X\n", MBR);
         printf("MAR: 0x%04x\n", MAR);
@@ -326,11 +341,13 @@ int main()
         }
         for (int impressao = 0; impressao < 154; impressao++) {
             printf("%3d: 0x%02x\t", impressao, memoria[impressao]);
-            
+
             if ((impressao + 1) % 10 == 0) {
                 printf("\n");
             }
         }
+
+        */
         printf("\nPressione ENTER para continuar a execucao do programa.\n");
        while (getchar() != '\n');
     }
