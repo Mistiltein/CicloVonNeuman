@@ -34,62 +34,165 @@
 #define lsh   0b11100
 #define rsh   0b11101
 
+// Registradores
+unsigned char memoria[154] = {0};
+unsigned int MBR = 0;
+unsigned short int MAR = 0;
+unsigned char IR = 0;
+unsigned char ro0 = 0;
+unsigned char ro1 = 0;
+unsigned short int IMM = 0;
+unsigned short int PC = 0;
+unsigned char E = 0;
+unsigned char L = 0;
+unsigned char G = 0;
+unsigned short int reg[4] = {0};
+
+
+// Separando a posição da memória
+void separaPosicao(char *entrada, char *posicao) {
+    sscanf(entrada, "%[^;]", posicao);
+}
+
+// Converte hexadecimal para inteiro
+int hexaParaInt(const char *hexa) {
+    return (int)strtol(hexa, NULL, 16);
+}
+
+// Retorna a próxima posição de separador
+int proxInstrucao(const char *entrada, int ini, char dive) {
+    char *p = strchr(entrada + ini, dive);
+    return p ? (int)(p - entrada) + 1 : strlen(entrada);
+}
+
+// Separa a instrução principal
+void separaInstrucao(char *entrada, char *instrucao, int ini) {
+    int i = 0;
+    while (entrada[ini + i] && entrada[ini + i] != '/') {
+        instrucao[i] = entrada[ini + i];
+        i++;
+    }
+    if (entrada[ini + i] == '/') instrucao[i++] = '/';
+    instrucao[i] = '\0';
+}
+
+// Extrai valor em hexadecimal
+int extraiValor(char *entrada, int ini) {
+    char valorHex[6];
+    sscanf(entrada + ini, "%5s", valorHex);
+    return hexaParaInt(valorHex);
+}
+
+// Obtém o opcode
+int getOpcode(const char *op) {
+    if (strcmp(op, "hlt") == 0) return hlt;
+    if (strcmp(op, "nop") == 0) return nop;
+    if (strcmp(op, "ldr") == 0) return ldr;
+    if (strcmp(op, "str") == 0) return str;
+    if (strcmp(op, "add") == 0) return add;
+    if (strcmp(op, "sub") == 0) return sub;
+    if (strcmp(op, "mul") == 0) return mul;
+    if (strcmp(op, "div") == 0) return div;
+    if (strcmp(op, "cmp") == 0) return cmp;
+    if (strcmp(op, "movr") == 0) return movr;
+    if (strcmp(op, "and") == 0) return and;
+    if (strcmp(op, "or") == 0) return or;
+    if (strcmp(op, "xor") == 0) return xor;
+    if (strcmp(op, "not") == 0) return not;
+    if (strcmp(op, "je") == 0) return je;
+    if (strcmp(op, "jne") == 0) return jne;
+    if (strcmp(op, "jl") == 0) return jl;
+    if (strcmp(op, "jle") == 0) return jle;
+    if (strcmp(op, "jg") == 0) return jg;
+    if (strcmp(op, "jge") == 0) return jge;
+    if (strcmp(op, "jmp") == 0) return jmp;
+    if (strcmp(op, "ld") == 0) return ld;
+    if (strcmp(op, "st") == 0) return st;
+    if (strcmp(op, "movi") == 0) return movi;
+    if (strcmp(op, "addi") == 0) return addi;
+    if (strcmp(op, "subi") == 0) return subi;
+    if (strcmp(op, "muli") == 0) return muli;
+    if (strcmp(op, "divi") == 0) return divi;
+    if (strcmp(op, "lsh") == 0) return lsh;
+    if (strcmp(op, "rsh") == 0) return rsh;
+    return -1;
+}
+
+// Codifica e armazena instruções na memória
+void guardaInstrucao(const char *instrucao, int pos, char *mem) {
+    char op[10], arg1[10], arg2[10] = "";
+    int opcode = -1, reg1 = 0, reg2 = 0, valor_imm = 0;
+    unsigned short cod = 0;
+
+    sscanf(instrucao, "%s %[^,], %s", op, arg1, arg2);
+    opcode = getOpcode(op);
+    if (opcode == -1) return;
+
+    if (arg1[0] == 'r' || arg1[0] == 'R') reg1 = atoi(arg1 + 1);
+
+    if (arg2[0] == 'r' || arg2[0] == 'R') {
+        reg2 = atoi(arg2 + 1);
+        cod = (opcode << 11) | (reg1 << 9) | (reg2 << 7);
+        mem[pos] = (cod >> 8) & 0xFF;
+        mem[pos + 1] = cod & 0xFF;
+    } else if (strlen(arg2) > 0) {
+        valor_imm = (int)strtol(arg2, NULL, 16);
+        cod = (opcode << 11) | (reg1 << 9);
+        mem[pos] = (cod >> 8) & 0xFF;
+        mem[pos + 1] = 0x00;
+        mem[pos + 2] = valor_imm & 0xFF;
+    }
+}
+
+// Decodifica linha de texto e armazena na memória
+void decodificaStringEGuardaNaMemoria(char *entrada, unsigned char *memoria) {
+    char posicao[6], instrucao[50];
+    int ini = 0;
+
+    memset(posicao, '\0', sizeof(posicao));
+    memset(instrucao, '\0', sizeof(instrucao));
+
+    separaPosicao(entrada, posicao);
+    int pos = hexaParaInt(posicao);
+    ini = proxInstrucao(entrada, ini, ';');
+
+    // Pega o tipo direto
+    char tipo = entrada[ini];
+    ini = proxInstrucao(entrada, ini, ';');
+
+    if (tipo == 'i') {
+        separaInstrucao(entrada, instrucao, ini);
+        if (pos >= 154 - 1) return;
+        guardaInstrucao(instrucao, pos, (char *)memoria);
+    } else if (tipo == 'd') {
+        int valor = extraiValor(entrada, ini);
+        if (pos >= 154 - 1) return;
+        memoria[pos] = (valor >> 8) & 0xFF;
+        memoria[pos] = valor & 0xFF;
+    }
+}
+
+// Carrega arquivo na memória
+void carregar_memoria(const char* nome_arquivo) {
+    printf("Carregando arquivo...\n");
+    FILE* arquivo = fopen(nome_arquivo, "r");
+    if (!arquivo) {
+        perror("Erro ao abrir arquivo");
+        exit(1);
+    }
+
+    char linha[154];
+    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+        decodificaStringEGuardaNaMemoria(linha, memoria);
+    }
+
+    fclose(arquivo);
+}
+
 int main()
 {
-    // Registradores
-    unsigned char memoria[154] = {0};
-    unsigned int MBR = 0;
-    unsigned short int MAR = 0;
-    unsigned char IR = 0;
-    unsigned char ro0 = 0;
-    unsigned char ro1 = 0;
-    unsigned short int IMM = 0;
-    unsigned short int PC = 0;
-    unsigned char E = 0;
-    unsigned char L = 0;
-    unsigned char G = 0;
-    unsigned short int reg[4] = {0};
-
-    memoria[0] = 0xa8;
-    memoria[1] = 0x00;
-    memoria[2] = 0x96;
-
-    memoria[3] = 0xaa;
-    memoria[4] = 0x00;
-    memoria[5] = 0x98;
-
-    memoria[6] = 0x28;
-    memoria[7] = 0x80;
-
-    memoria[8] = 0xaa;
-    memoria[9] = 0x00;
-    memoria[10] = 0x94;
-
-    memoria[11] = 0x3a;
-    memoria[12] = 0x00;
-    memoria[13] = 0xac;
-    memoria[14] = 0x00;
-    memoria[15] = 0x92;
-    memoria[16] = 0x34;
-    memoria[17] = 0x80;
-    memoria[18] = 0xaa;
-    memoria[19] = 0x00;
-    memoria[20] = 0x90;
-    memoria[21] = 0x23;
-    memoria[22] = 0x00;
-    memoria[23] = 0xb2;
-    memoria[24] = 0x00;
-    memoria[25] = 0x8e;
-    memoria[144] = 0x20;
-    memoria[145] = 0x00;
-    memoria[146] = 0x03;
-    memoria[147] = 0x00;
-    memoria[148] = 0x04;
-    memoria[149] = 0x00;
-    memoria[150] = 0x05;
-    memoria[151] = 0x00;
-    memoria[152] = 0x03;
-    memoria[153] = 0x00;
+    // Carregando a memória
+    carregar_memoria("entrada.txt");
 
     while (PC <= 154) {
         // Busca
