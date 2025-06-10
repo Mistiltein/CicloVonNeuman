@@ -200,17 +200,12 @@ int main()
 
         MBR = memoria[MAR] << 8;
         MAR++;
-        //printf("MBR APOS PRIMEIRO DESLOCAMENTO: %08x\n", MBR);
         MBR = (MBR | memoria[MAR]) << 8;
         MAR++;
-        //printf("MBR APOS SEGUNDO DESLOCAMENTO: %08x\n", MBR);
         MBR = (MBR | memoria[MAR]);
-        //printf("MBR APOS TERCEIRO DESLOCAMENTO: %08x\n", MBR);
 
         // Decodificacao
         IR = MBR >> 19;
-        // printf("MBR: %X\n", MBR);
-        // printf("IR: %X\n", IR);
 
         if (IR == hlt || IR == nop) {
             ro0 = MBR >> 16;
@@ -220,32 +215,30 @@ int main()
         if (IR == ldr || IR == str || IR == add || IR == sub || IR == mul || IR == div || IR == cmp || IR == movr || IR == and || IR == or || IR == xor) {
             ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
             ro1 = (MBR & 0x018000) >> 15; // 0000 0001 1000 0000 0000 0000
-            // printf("ro0: %X\n", ro0);
-            // printf("ro1: %X\n", ro1);
         }
 
         if (IR == not) {
             ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
-            // printf("ro0: %X\n", ro0);
-            // printf("ro1: %X\n", ro1);
         }
 
         if (IR == je || IR == jne || IR == jl || IR == jle || IR == jg || IR == jge || IR == jmp) {
-            MAR = MBR >> 16;
-            // printf("MAR: %X\n", MAR);
+            MAR = (MBR & 0x0000ff);
         }
 
-        if (IR == ld || IR == st || IR == movi || IR == addi || IR == subi || IR == muli || IR == divi || IR == lsh || IR == rsh) {
+        if (IR == ld || IR == st) {
             ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
             MAR = (MBR & 0x0000ff);
-            // printf("ro0: %X\n", ro0);
-            // printf("MAR: %X\n", MAR);
+        }
+
+        if (IR == movi || IR == addi || IR == subi || IR == muli || IR == divi || IR == lsh || IR == rsh) {
+            ro0 = (MBR & 0x060000) >> 17; // 0000 0110 0000 0000 0000 0000
+            IMM = (MBR & 0x0000ff);
         }
 
         // Execucao
         switch (IR) {
             case hlt :
-                printf("HALT. Execucao Finalizada");
+                printf("HALT. Execucao Finalizada\n");
                 break;
 
             case nop :
@@ -355,6 +348,8 @@ int main()
             case jle :
                 if (L == 1 || E == 1) {
                     PC = MAR;
+                    // printf("-----------------------------\n");
+                    // printf("PC DENTRO DO JLE: %x\n", PC);
                 } else {
                     PC = PC + 3;
                 }
@@ -388,10 +383,7 @@ int main()
             case st :
                 printf("MBR: %08X\n", MBR);
                 MBR = reg[ro0];
-                // printf("MBR RECEBENDO O VALOR DO ACUMULADOR: %x\n", MBR);
                 memoria[MAR] = MBR;
-                // printf("INDICE DA MEMORIA: %x\n", MAR);
-                // printf("MEMORIA COM O VALOR ARMAZENADO: %x\n", memoria[MAR]);
                 PC = PC + 3;
                 break;
 
