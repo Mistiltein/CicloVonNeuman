@@ -209,8 +209,8 @@ int main()
 
         // Decodificacao
         IR = MBR >> 19;
-        printf("MBR: %X\n", MBR);
-        printf("IR: %X\n", IR);
+        // printf("MBR: %X\n", MBR);
+        // printf("IR: %X\n", IR);
 
         if (IR == hlt || IR == nop) {
             ro0 = MBR >> 16;
@@ -432,15 +432,15 @@ int main()
         }
 
         // Dados na tela
-        printf("CPU:\n MBR: %08X\n", MBR);
-        printf("MAR: 0x%04x\n", MAR);
+        printf("CPU:\nMBR: %08X\t", MBR);
+        printf("MAR: 0x%04x\t", MAR);
         printf("IR: 0x%02X\n", IR);
-        printf("ro0: 0x%01X\n", ro0);
-        printf("ro1: 0x%01X\n", ro1);
+        printf("ro0: 0x%01X\t", ro0);
+        printf("ro1: 0x%01X\t", ro1);
         printf("IMM: 0x%04X\n", IMM);
-        printf("PC: 0x%04X\n", PC);
-        printf("E: 0x%X\n", E);
-        printf("L: 0x%X\n", L);
+        printf("PC: 0x%04X\t", PC);
+        printf("E: 0x%X\t", E);
+        printf("L: 0x%X\t", L);
         printf("G: 0x%X\n", G);
         for (int regPrint = 0; regPrint < 4; regPrint++) {
             printf("reg%d:\t\t0x%04x\n", regPrint, reg[regPrint]);
