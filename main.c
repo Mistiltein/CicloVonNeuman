@@ -118,6 +118,8 @@ int getOpcode(const char *op) {
     return -1;
 }
 
+
+// Codifica e armazena instruções na memória
 void guardaInstrucao(const char *instrucao, int pos, char *mem) {
     char op[10], arg1[10] = "", arg2[10] = "";
     int opcode = -1, reg1 = 0, reg2 = 0, valor_imm = 0;
@@ -146,12 +148,8 @@ void guardaInstrucao(const char *instrucao, int pos, char *mem) {
     }
 
     // Instruções de salto (1 imediato)
-    if (
-        strcmp(op, "je") == 0 || strcmp(op, "jne") == 0 ||
-        strcmp(op, "jl") == 0 || strcmp(op, "jle") == 0 ||
-        strcmp(op, "jg") == 0 || strcmp(op, "jge") == 0 ||
-        strcmp(op, "jmp") == 0
-    ) {
+    if (strcmp(op, "je") == 0 || strcmp(op, "jne") == 0 ||  strcmp(op, "jl") == 0 || 
+        strcmp(op, "jle") == 0 || strcmp(op, "jg") == 0 || strcmp(op, "jge") == 0 || strcmp(op, "jmp") == 0) {
         valor_imm = (int)strtol(arg1, NULL, 16);
         cod = (opcode << 11);
         mem[pos] = (cod >> 8) & 0xFF;
