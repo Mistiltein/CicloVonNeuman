@@ -25,3 +25,29 @@ e;i;sub r1, r2      r1 = 2 - 1 = 1
 94;d;3
 96;d;2
 98;d;1
+
+
+
+
+
+
+######## Programa 1 ########
+######## Está funcionando corretamente. ########
+0;i;ld r0, 96       r0 = 5
+3;i;ld r1, 98       r1 = 3      
+6;i;sub r0, r1      r0 = 5 - 3
+8;i;ld r1, 94       r1 = 4
+b;i;div r1, r0      r1 = 4 / 2
+d;i;ld r2, 92       r2 = 3
+10;i;mul r2, r1     r2 = 3 * 2
+12;i;ld r1, 90      r1 = 20
+15;i;add r1, r2     r1 = 20 + 6
+17;i;st r1, 8e      mem[142] = 26
+1a;i;hlt            000000000000000000
+90;d;20
+92;d;3
+94;d;4
+96;d;5
+98;d;3
+
+
