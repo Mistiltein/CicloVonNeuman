@@ -118,6 +118,7 @@ int getOpcode(const char *op) {
     return -1;
 }
 
+
 // Codifica e armazena instruções na memória
 void guardaInstrucao(const char *instrucao, int pos, char *mem) {
     char op[10], arg1[10] = "", arg2[10] = "";
@@ -128,9 +129,27 @@ void guardaInstrucao(const char *instrucao, int pos, char *mem) {
     opcode = getOpcode(op);
     if (opcode == -1) return;
 
-    // Instruções de salto (1 operando imediato)
-    if (strcmp(op, "je") == 0 || strcmp(op, "jne") == 0 || strcmp(op, "jl") == 0 || strcmp(op, "jle") == 0 ||
-        strcmp(op, "jg") == 0 || strcmp(op, "jge") == 0 || strcmp(op, "jmp") == 0) {
+    // Instruções sem operandos (hlt, nop)
+    if (strcmp(op, "hlt") == 0 || strcmp(op, "nop") == 0) {
+        cod = (opcode << 11);
+        mem[pos] = (cod >> 8) & 0xFF;
+        mem[pos + 1] = cod & 0xFF;
+        return;
+    }
+
+    // Instrução com 1 registrador (not)
+    if (strcmp(op, "not") == 0) {
+        if (arg1[0] == 'r' || arg1[0] == 'R')
+            reg1 = atoi(arg1 + 1);
+        cod = (opcode << 11) | (reg1 << 9);
+        mem[pos] = (cod >> 8) & 0xFF;
+        mem[pos + 1] = cod & 0xFF;
+        return;
+    }
+
+    // Instruções de salto (1 imediato)
+    if (strcmp(op, "je") == 0 || strcmp(op, "jne") == 0 ||  strcmp(op, "jl") == 0 || 
+        strcmp(op, "jle") == 0 || strcmp(op, "jg") == 0 || strcmp(op, "jge") == 0 || strcmp(op, "jmp") == 0) {
         valor_imm = (int)strtol(arg1, NULL, 16);
         cod = (opcode << 11);
         mem[pos] = (cod >> 8) & 0xFF;
@@ -139,7 +158,7 @@ void guardaInstrucao(const char *instrucao, int pos, char *mem) {
         return;
     }
 
-    // Operações com dois registradores
+    // Instruções com dois registradores
     if (arg1[0] == 'r' || arg1[0] == 'R') reg1 = atoi(arg1 + 1);
     if (arg2[0] == 'r' || arg2[0] == 'R') {
         reg2 = atoi(arg2 + 1);
@@ -147,7 +166,7 @@ void guardaInstrucao(const char *instrucao, int pos, char *mem) {
         mem[pos] = (cod >> 8) & 0xFF;
         mem[pos + 1] = cod & 0xFF;
     } else if (strlen(arg2) > 0) {
-        // Operações com imediato
+        // Instruções com imediato
         valor_imm = (int)strtol(arg2, NULL, 16);
         cod = (opcode << 11) | (reg1 << 9);
         mem[pos] = (cod >> 8) & 0xFF;
@@ -155,7 +174,6 @@ void guardaInstrucao(const char *instrucao, int pos, char *mem) {
         mem[pos + 2] = valor_imm & 0xFF;
     }
 }
-
 
 // Decodifica linha de texto e armazena na memória
 void decodificaStringEGuardaNaMemoria(char *entrada, unsigned char *memoria) {
