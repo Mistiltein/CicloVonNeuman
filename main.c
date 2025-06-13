@@ -477,7 +477,7 @@ int main()
             }
         }
 
-        printf("\nPressione ENTER para continuar a execucao do programa.\n");
+        printf("\nPressione ENTER para continuar a execucao do programa ou CTRL+C para finalizar a execucao.\n");
        while (getchar() != '\n');
     }
 

@@ -1,1 +1,25 @@
-Aqui será o arquivo tutorial de como executar/compilar o programa. Assim que terminamos vou fazer bem o arquivo.
+Aqui será o arquivo tutorial de como executar/compilar o programa e mais informações extras.
+
+Como executar:
+    O programa a se executar, deve ser colocado no arquivo "entrada.txt". O formato deve ser da mesma forma
+ao qual foi colocado no enunciado do trabalho.
+    O programa já está pré-compilado, então basta abrir o terminal cmd no diretório do ciclo e digitar "main.exe" que ele deve rodar o programa
+inserido no arquivo "entrada.txt".
+    Durante a execução, será impresso o valor dos registradores e a memória, e deverá ser apertado o "ENTER" para que o ciclo se repita,
+ou CTRL+C para finalizar previamente.
+
+Detalhes: No arquivo "Conversão_Teste", está os programas convertidos ou alguns testes de instruções e de funcionamento do programa,
+realizados na mão para verificarmos se o rumo do programa estava correto. Porém ele não tem nada a ver com o funcionamento em si do
+programa. 
+    E atualmente está o programa 2 inserido no arquivo "entrada.txt", porém está corrigido um pequeno erro de programção nele
+(de 2d;i;jle 30 foi para 2d;i;jle 0: o que antes falhava pois apontava para o HLT, agora está apontando para o início do programa, onde acontece
+o loop do somatório da equação).
+
+
+Informações extra: Optamos por deixar todo o código-fonte do leitor/ciclo de instrução no arquivo main.c, para facilitar a compilação do
+programa. Também optamos por deixar o ciclo em si apenas na função "int main" para facilitar a leitura e menos envolvimento com ponteiros,
+mesmo que a parte do programa onde envolve guardar a entrada na memória, esteja dividido em diversas funções. Mas futurarmente pretentedemos
+melhorar o programa, adicionando mais complexidades no processador(ex: cache), aumentando um pouco mais a memória, organizando os arquivos em .h e .c 
+e também adicionando uma interface bonitinha :).
+
+
