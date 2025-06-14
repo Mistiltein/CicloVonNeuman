@@ -426,37 +426,51 @@ int main()
                 break;
 
             case movi :
-                reg[ro0] = IMM;
+                printf("MBR antes do movi: %08X\n", MBR);
+                MBR = IMM;
+                reg[ro0] = MBR;
                 PC = PC + 3;
                 break;
 
             case addi :
-                reg[ro0] = reg[ro0] + IMM;
+                printf("MBR antes do addi: %08X\n", MBR);
+                MBR = IMM;
+                reg[ro0] = reg[ro0] + MBR;
                 PC = PC + 3;
                 break;
 
             case subi :
-                reg[ro0] = reg[ro0] - IMM;
+                printf("MBR antes do subi: %08X\n", MBR);
+                MBR = IMM;
+                reg[ro0] = reg[ro0] - MBR;
                 PC = PC + 3;
                 break;
 
             case muli :
-                reg[ro0] = reg[ro0] * IMM;
+                printf("MBR antes do muli: %08X\n", MBR);
+                MBR = IMM;
+                reg[ro0] = reg[ro0] * MBR;
                 PC = PC + 3;
                 break;
 
             case divi :
-                reg[ro0] = reg[ro0] / IMM;
+                printf("MBR antes do divi: %08X\n", MBR);
+                MBR = IMM;
+                reg[ro0] = reg[ro0] / MBR;
                 PC = PC + 3;
                 break;
 
             case lsh :
-                reg[ro0] = reg[ro0] << IMM;
+                printf("MBR antes do lsh: %08X\n", MBR);
+                MBR = IMM;
+                reg[ro0] = reg[ro0] << MBR;
                 PC = PC + 3;
                 break;
 
             case rsh :
-                reg[ro0] = reg[ro0] >> IMM;
+                printf("MBR antes do rsh: %08X\n", MBR);
+                MBR = IMM;
+                reg[ro0] = reg[ro0] >> MBR;
                 PC = PC + 3;
                 break;
         }
