@@ -22,7 +22,7 @@ deria o limite do vetor memoria[154].
 Detalhes: No arquivo "Conversão_Teste", está os programas convertidos ou alguns testes de instruções e de funcionamento do programa,
 realizados na mão para verificarmos se o rumo do programa estava correto. Porém ele não tem nada a ver com o funcionamento em si do
 programa. 
-    E atualmente está o programa 1 inserido no arquivo "entrada.txt".
+    E atualmente está o programa autoral de estudo inserido no arquivo "entrada.txt".
     No programa 2 está corrigido um pequeno erro de programação nele:
 (de 2d;i;jle 30 foi para 2d;i;jle 0: o que antes falhava pois apontava para o HLT, agora está apontando para o início do programa, onde acontece
 o loop do somatório da equação).
