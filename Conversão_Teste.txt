@@ -50,6 +50,8 @@ e;i;sub r1, r2      r1 = 2 - 1 = 1
 98;d;1
 
 
+
+####### Programa de Estudo - Victor #########
 Em C:
 int main(){
         int count = 0, a = 5, b = 2;
@@ -66,7 +68,6 @@ int main(){
 
 
 Em nossa linguagem de montagem:
-####### Programa de Estudo - Victor #########
 ######## Está funcionando corretamente. ########
 ######## ~~Porém eu quero me matar do tanto de erro de endereçamento~~ ##########
 0;i;ld r0, 96   

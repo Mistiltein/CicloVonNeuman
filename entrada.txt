@@ -19,7 +19,8 @@ e;i;addi r0, 1
 32;i;ld r1, 90 
 35;i;add r0, r1
 37;i;st r0, 96 
-3a;i;hlt
+3a;i;nop
+3b;i;hlt
 8e;d;a         
 90;d;14
 92;d;1b
