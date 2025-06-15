@@ -8,10 +8,22 @@ inserido no arquivo "entrada.txt".
     Durante a execução, será impresso o valor dos registradores e a memória, e deverá ser apertado o "ENTER" para que o ciclo se repita,
 ou CTRL+C para finalizar previamente.
 
+
+
+DETALHE IMPORTANTISSIMO: Na decodificação de instruções que utilizam o registrador MAR, optamos por usar a validação 0x0000ff, Validando
+apenas o byte menos significativo, mesmo que a estrutura das instruções diz que precisam dos dois. E o motivo:
+Evitar vazamento de memória. Como a memória tem apenas 154 endereços, os 154 podem ser representados em apenas 8 bits, então será neces-
+sário apenas um Byte durante a programação do programa. Caso fosse utilizado mais, ocorreria uma vazamento da nossa memória, já que exce-
+deria o limite do vetor memoria[154].
+
+
+
+
 Detalhes: No arquivo "Conversão_Teste", está os programas convertidos ou alguns testes de instruções e de funcionamento do programa,
 realizados na mão para verificarmos se o rumo do programa estava correto. Porém ele não tem nada a ver com o funcionamento em si do
 programa. 
-    E atualmente está o programa 2 inserido no arquivo "entrada.txt", porém está corrigido um pequeno erro de programção nele
+    E atualmente está o programa autoral de estudo inserido no arquivo "entrada.txt".
+    No programa 2 está corrigido um pequeno erro de programação nele:
 (de 2d;i;jle 30 foi para 2d;i;jle 0: o que antes falhava pois apontava para o HLT, agora está apontando para o início do programa, onde acontece
 o loop do somatório da equação).
 
