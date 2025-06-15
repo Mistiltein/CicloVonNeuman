@@ -50,7 +50,55 @@ e;i;sub r1, r2      r1 = 2 - 1 = 1
 98;d;1
 
 
+Em C:
+int main(){
+        int count = 0, a = 5, b = 2;
+        for(count = 0; count < 10; count++){
+                a = a + b;
+        }
+        if(a < 27){
+                a = a + 2 ;
+        }else if(a >= 27){
+                a = a + 20;
+        }
+        return 0;
+}
 
+
+Em nossa linguagem de montagem:
+####### Programa de Estudo - Victor #########
+######## Está funcionando corretamente. ########
+######## ~~Porém eu quero me matar do tanto de erro de endereçamento~~ ##########
+0;i;ld r0, 96   
+3;i;ld r1, 98       
+6;i;add r0, r1       
+8;i;st r0, 96   
+b;i;ld r0, 94  
+e;i;addi r0, 1     
+11;i;st r0, 94 
+14;i;ld r1, 8e  
+17;i;cmp r0, r1 
+19;i;jl 0       
+1c;i;ld r0, 96 
+1f;i;ld r1, 92  
+22;i;cmp r0, r1 
+24;i;jge 32     
+27;i;ld r1, 98 
+2a;i;add r0, r1
+2c;i;st r0, 96 
+2f;i;jmp 1c     
+32;i;ld r1, 90 
+35;i;add r0, r1
+37;i;st r0, 96 
+3a;i;hlt
+8e;d;a         
+90;d;14
+92;d;1b
+94;d;0
+96;d;5
+98;d;2
+
+Resultado esperado = mem[142] = 0x2f
 
 
 ####### Testes de comparacao #######
