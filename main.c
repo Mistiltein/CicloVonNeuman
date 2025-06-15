@@ -239,8 +239,7 @@ int main()
         IR = MBR >> 19;
 
         if (IR == hlt || IR == nop) {
-            ro0 = MBR >> 16;
-            printf("ro0: %x\n", ro0);
+            printf("HALT || NOP: Nada alterado\n");
         }
 
         if (IR == ldr || IR == str || IR == add || IR == sub || IR == mul || IR == div || IR == cmp || IR == movr || IR == and || IR == or || IR == xor) {
@@ -416,6 +415,7 @@ int main()
             case st :
                 printf("MBR antes do ST: %08X\n", MBR);
                 MBR = reg[ro0];
+               // Em casos de IMM > 255 e < 65535
                // if(MBR > 0xFF){
                //     memoria[MAR] = (MBR >> 8) & 0xFF; 
                //     memoria[MAR + 1] = MBR & 0xFF;
