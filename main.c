@@ -199,7 +199,7 @@ void decodificaStringEGuardaNaMemoria(char *entrada, unsigned char *memoria) {
         int valor = extraiValor(entrada, ini);
         if (pos >= 154 - 1) return;
         memoria[pos] = (valor >> 8) & 0xFF;
-        memoria[pos] = valor & 0xFF;
+        memoria[pos + 1] = valor & 0xFF;
     }
 }
 
@@ -393,6 +393,7 @@ int main()
                 }
                 break;
 
+
             case jge :
                 if (G == 1 || E == 1){
                     PC = MAR;
@@ -407,7 +408,7 @@ int main()
 
             case ld :
                 printf("MBR antes do LD: %08X\n", MBR);
-                MBR = memoria[MAR];
+                MBR = ((memoria[MAR] & 0xFF) << 8) | (memoria[MAR + 1] & 0xFF);
                 reg[ro0] = MBR;
                 PC = PC + 3;
                 break;
@@ -415,13 +416,8 @@ int main()
             case st :
                 printf("MBR antes do ST: %08X\n", MBR);
                 MBR = reg[ro0];
-               // Em casos de IMM > 255 e < 65535
-               // if(MBR > 0xFF){
-               //     memoria[MAR] = (MBR >> 8) & 0xFF; 
-               //     memoria[MAR + 1] = MBR & 0xFF;
-               // }else{
-                    memoria[MAR] = MBR & 0xFF; 
-               // }
+                    memoria[MAR] = (MBR >> 8) & 0xFF; 
+                    memoria[MAR + 1] = MBR & 0xFF;
                 PC = PC + 3;
                 break;
 
